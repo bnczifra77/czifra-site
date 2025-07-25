@@ -4,20 +4,68 @@
     <meta charset="UTF-8" />
     <link rel="icon" type="image/svg+xml" href="/vite.svg" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    
+    <!-- PWA Manifest -->
+    <link rel="manifest" href="/manifest.json" />
+    <meta name="apple-mobile-web-app-capable" content="yes" />
+    <meta name="apple-mobile-web-app-status-bar-style" content="default" />
+    <meta name="apple-mobile-web-app-title" content="Czifra Consulting" />
+    
+    <!-- Preload critical resources -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    
+    <!-- SEO Meta Tags -->
     <title>Czifra Consulting | Strategic Business Consulting</title>
     <meta name="description" content="Transform your business with Czifra Consulting. We deliver expert guidance, innovative strategies, and measurable results for sustainable growth." />
+    <meta name="keywords" content="business consulting, strategic planning, leadership development, business optimization, financial advisory, innovation consulting" />
+    <meta name="author" content="Czifra Consulting" />
+    
+    <!-- Open Graph -->
     <meta property="og:title" content="Czifra Consulting | Strategic Business Consulting" />
     <meta property="og:description" content="Transform your business with Czifra Consulting. We deliver expert guidance, innovative strategies, and measurable results for sustainable growth." />
     <meta property="og:type" content="website" />
     <meta property="og:url" content="https://czifraconsulting.com" />
     <meta property="og:image" content="/vite.svg" />
+    <meta property="og:site_name" content="Czifra Consulting" />
+    
+    <!-- Twitter Cards -->
     <meta name="twitter:card" content="summary_large_image" />
     <meta name="twitter:title" content="Czifra Consulting | Strategic Business Consulting" />
     <meta name="twitter:description" content="Transform your business with Czifra Consulting. We deliver expert guidance, innovative strategies, and measurable results for sustainable growth." />
     <meta name="twitter:image" content="/vite.svg" />
+    
+    <!-- Additional SEO -->
+    <meta name="robots" content="index, follow" />
+    <meta name="theme-color" content="#001F54" />
+    <meta name="msapplication-TileColor" content="#001F54" />
+    
+    <!-- Google Analytics (replace with your actual GA4 ID) -->
+    <!-- <script async src="https://www.googletagmanager.com/gtag/js?id=GA_MEASUREMENT_ID"></script>
+    <script>
+      window.dataLayer = window.dataLayer || [];
+      function gtag(){dataLayer.push(arguments);}
+      gtag('js', new Date());
+      gtag('config', 'GA_MEASUREMENT_ID');
+    </script> -->
   </head>
   <body>
     <div id="root"></div>
     <script type="module" src="/src/main.jsx"></script>
+    
+    <!-- Service Worker Registration -->
+    <script>
+      if ('serviceWorker' in navigator) {
+        window.addEventListener('load', () => {
+          navigator.serviceWorker.register('/sw.js')
+            .then((registration) => {
+              console.log('SW registered: ', registration);
+            })
+            .catch((registrationError) => {
+              console.log('SW registration failed: ', registrationError);
+            });
+        });
+      }
+    </script>
   </body>
 </html>

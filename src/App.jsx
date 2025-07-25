@@ -5,9 +5,10 @@ import CTA from './components/CTA.jsx';
 import Contact from './components/Contact.jsx';
 import Footer from './components/Footer.jsx';
 import DarkModeToggle from './components/DarkModeToggle.jsx';
+
 export default function App() {
   return (
-    <div className="min-h-screen bg-blue-500 text-white">
+    <div className="min-h-screen">
       <Header />
       <Hero />
       <Services />
