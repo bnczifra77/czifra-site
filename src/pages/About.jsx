@@ -303,11 +303,11 @@ export default function About() {
               <div className="space-y-4">
                 <div className="flex items-center gap-3">
                   <Phone className="w-5 h-5 text-blue-300" />
-                  <span>(123) 456-7890</span>
+                                      <span>(609) 635-6320</span>
                 </div>
                 <div className="flex items-center gap-3">
                   <Mail className="w-5 h-5 text-blue-300" />
-                  <span>email@example.com</span>
+                                      <span>bnczifra77@gmail.com</span>
                 </div>
                 <div className="flex items-center gap-3">
                   <Calendar className="w-5 h-5 text-blue-300" />

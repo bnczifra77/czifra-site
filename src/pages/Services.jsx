@@ -280,11 +280,11 @@ export default function Services() {
               <div className="space-y-4">
                 <div className="flex items-center gap-3">
                   <div className="w-5 h-5 bg-blue-500 rounded-full"></div>
-                  <span>(123) 456-7890</span>
+                                      <span>(609) 635-6320</span>
                 </div>
                 <div className="flex items-center gap-3">
                   <div className="w-5 h-5 bg-blue-500 rounded-full"></div>
-                  <span>email@example.com</span>
+                                      <span>bnczifra77@gmail.com</span>
                 </div>
                 <div className="flex items-center gap-3">
                   <div className="w-5 h-5 bg-blue-500 rounded-full"></div>

@@ -40,7 +40,7 @@ export default function Contact() {
                   </div>
                   <div>
                     <h3 className="font-bold text-[#001F54] dark:text-white">Phone</h3>
-                    <p className="text-gray-600 dark:text-gray-300">(123) 456-7890</p>
+                    <p className="text-gray-600 dark:text-gray-300">(609) 635-6320</p>
                   </div>
                 </div>
                 <div className="flex items-center gap-4">
@@ -49,7 +49,7 @@ export default function Contact() {
                   </div>
                   <div>
                     <h3 className="font-bold text-[#001F54] dark:text-white">Email</h3>
-                    <p className="text-gray-600 dark:text-gray-300">email@example.com</p>
+                    <p className="text-gray-600 dark:text-gray-300">bnczifra77@gmail.com</p>
                   </div>
                 </div>
                 <div className="flex items-center gap-4">
