@@ -1,5 +1,5 @@
 import { useEffect } from 'react';
-import { Link, useEffect } from 'react-router-dom';
+import { Link } from 'react-router-dom';
 import { ArrowRight, Target, Heart, Shield, Users, TrendingUp, Award, Calendar, MapPin, Phone, Mail } from 'lucide-react';
 
 export default function About() {
