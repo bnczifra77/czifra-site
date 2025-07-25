@@ -2,6 +2,7 @@ import { BrowserRouter as Router, Routes, Route } from 'react-router-dom';
 import { useState, useEffect } from 'react';
 import Header from './components/Header.jsx';
 import Footer from './components/Footer.jsx';
+import FloatingDarkModeToggle from './components/FloatingDarkModeToggle.jsx';
 import Homepage from './pages/Homepage.jsx';
 import Services from './pages/Services.jsx';
 import About from './pages/About.jsx';
@@ -26,7 +27,7 @@ function App() {
   return (
     <Router>
       <div className={`min-h-screen ${darkMode ? 'dark bg-gray-900 text-gray-100' : 'bg-white text-gray-900'}`}>
-        <Header darkMode={darkMode} toggleDarkMode={toggleDarkMode} />
+        <Header />
         <main>
           <Routes>
             <Route path="/" element={<Homepage />} />
@@ -35,6 +36,7 @@ function App() {
             <Route path="/contact" element={<Contact />} />
           </Routes>
         </main>
+        <FloatingDarkModeToggle darkMode={darkMode} toggleDarkMode={toggleDarkMode} />
         <Footer />
       </div>
     </Router>
