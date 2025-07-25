@@ -41,27 +41,27 @@ const services = [
 
 export default function Services() {
   return (
-    <section id="services" className="bg-white py-20">
+    <section id="services" className="bg-white py-12 md:py-20">
       <div className="container max-w-[1200px] mx-auto px-4">
-        <h2 className="text-4xl font-bold text-[#001F54] text-center mb-4">Expert Consulting Services</h2>
-        <p className="text-xl text-gray-500 text-center mb-12 max-w-2xl mx-auto">
+        <h2 className="text-2xl md:text-4xl font-bold text-[#001F54] text-center mb-4">Expert Consulting Services</h2>
+        <p className="text-base md:text-xl text-gray-500 text-center mb-8 md:mb-12 max-w-2xl mx-auto">
           Comprehensive solutions designed to transform your business challenges into competitive advantages.
         </p>
-        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
+        <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-4 md:gap-6">
           {services.map((service, idx) => (
-            <div key={service.title} className="bg-white rounded-2xl p-8 shadow-lg flex flex-col items-start">
+            <div key={service.title} className="bg-white rounded-2xl p-5 md:p-8 shadow-lg flex flex-col items-start">
               {service.icon}
-              <h3 className="text-2xl font-bold text-[#001F54] mb-2">{service.title}</h3>
-              <p className="text-base text-gray-500 mb-4">{service.desc}</p>
+              <h3 className="text-xl md:text-2xl font-bold text-[#001F54] mb-2">{service.title}</h3>
+              <p className="text-sm md:text-base text-gray-500 mb-4">{service.desc}</p>
               <ul className="mb-6 space-y-1">
                 {service.bullets.map((b, i) => (
-                  <li key={i} className="flex items-center gap-2 text-sm text-gray-600">
+                  <li key={i} className="flex items-center gap-2 text-xs md:text-sm text-gray-600">
                     <span className="w-2 h-2 bg-blue-500 rounded-full inline-block" />
                     {b}
                   </li>
                 ))}
               </ul>
-              <button className="mt-auto border border-blue-500 text-blue-500 bg-white text-[14px] px-4 py-2 rounded-lg font-medium w-full hover:bg-blue-50 hover:scale-105 transition">
+              <button className="mt-auto border border-blue-500 text-blue-500 bg-white text-[13px] md:text-[14px] px-3 md:px-4 py-2 rounded-lg font-medium w-full hover:bg-blue-50 hover:scale-105 transition">
                 Learn More
               </button>
             </div>
