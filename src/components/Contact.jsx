@@ -107,7 +107,7 @@ export default function Contact() {
           {/* Right: Company Info Card */}
           <div className="flex-1 bg-[#001F54] dark:bg-[#1a2740] rounded-2xl p-4 md:p-8 flex flex-col gap-4 text-white shadow-lg mt-6 md:mt-0">
             <div className="flex items-center gap-3 mb-2">
-              <div className="bg-blue-500 dark:bg-blue-900 text-white font-bold text-2xl rounded-lg px-3 py-2 flex items-center justify-center" style={{ minWidth: 40, minHeight: 40 }} aria-label="Czifra Consulting Logo">C</div>
+              {/* Remove logo badge */}
               <div>
                 <div className="text-lg md:text-xl font-bold text-white dark:text-white">Czifra Consulting</div>
                 <div className="text-xs md:text-base text-blue-100 dark:text-blue-200">Helping YOU Succeed</div>
