@@ -7,11 +7,9 @@ export default function Header() {
     <header className="sticky top-0 z-50 w-full bg-white dark:bg-[#0a1627] shadow-md h-[60px] flex items-center">
       <div className="container max-w-[1200px] mx-auto px-4 flex items-center justify-between h-full">
         {/* Left: Logo */}
-        <div className="flex items-center gap-3">
-          <div className="bg-blue-500 text-white font-bold text-2xl rounded-lg px-2 py-1 flex items-center justify-center" style={{ minWidth: 40, minHeight: 40 }} aria-label="Czifra Consulting Logo">
-            C
-          </div>
-          <span className="text-[20px] font-bold text-[#001F54] dark:text-white">Czifra Consulting</span>
+        <div className="flex items-center gap-2 md:gap-3">
+          {/* Remove logo badge */}
+          <span className="text-lg md:text-xl font-bold text-[#001F54] dark:text-white">Czifra Consulting</span>
         </div>
         {/* Center: Nav links */}
         <nav className="hidden md:flex items-center gap-6" role="navigation" aria-label="Main navigation">
