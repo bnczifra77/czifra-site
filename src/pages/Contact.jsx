@@ -11,7 +11,7 @@ export default function Contact() {
   const [state, handleSubmit] = useForm('yourFormId');
 
   useEffect(() => {
-    document.title = 'Czifra Consulting';
+    document.title = 'Contact Us - Czifra Consulting';
   }, []);
 
   return (

@@ -4,7 +4,7 @@ import { ArrowRight, Target, Heart, Shield, Users, TrendingUp, Award, Calendar, 
 
 export default function About() {
   useEffect(() => {
-    document.title = 'Czifra Consulting';
+    document.title = 'About Us - Czifra Consulting';
   }, []);
 
   const scrollToContact = () => {

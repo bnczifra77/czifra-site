@@ -4,7 +4,7 @@ import { ArrowRight, TrendingUp, Zap, Users, Shield, Target, Lightbulb, Clock, S
 
 export default function Services() {
   useEffect(() => {
-    document.title = 'Czifra Consulting';
+    document.title = 'Services - Czifra Consulting';
   }, []);
 
   const scrollToContact = () => {

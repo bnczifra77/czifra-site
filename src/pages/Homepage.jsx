@@ -4,7 +4,7 @@ import { ArrowRight, CheckCircle, Users, TrendingUp, Shield, Zap } from 'lucide-
 
 export default function Homepage() {
   useEffect(() => {
-    document.title = 'Czifra Consulting';
+    document.title = 'Czifra Consulting - Empowering Small Business Owners';
   }, []);
 
   const scrollToContact = () => {
