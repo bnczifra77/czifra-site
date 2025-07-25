@@ -1,7 +1,11 @@
-import { Link } from 'react-router-dom';
+import { Link, useEffect } from 'react-router-dom';
 import { ArrowRight, Target, Heart, Shield, Users, TrendingUp, Award, Calendar, MapPin, Phone, Mail } from 'lucide-react';
 
 export default function About() {
+  useEffect(() => {
+    document.title = 'Czifra Consulting';
+  }, []);
+
   const scrollToContact = () => {
     const contactSection = document.getElementById('contact');
     if (contactSection) {

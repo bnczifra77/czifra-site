@@ -4,10 +4,15 @@
 // Docs: https://formspree.io/react/
 import { useForm, ValidationError } from '@formspree/react';
 import { Phone, Mail, MapPin, Clock, Send, CheckCircle } from 'lucide-react';
+import { useEffect } from 'react';
 
 export default function Contact() {
   // Replace 'yourFormId' with your actual Formspree form ID
   const [state, handleSubmit] = useForm('yourFormId');
+
+  useEffect(() => {
+    document.title = 'Czifra Consulting';
+  }, []);
 
   return (
     <div className="min-h-screen bg-white dark:bg-[#0a1627]">
