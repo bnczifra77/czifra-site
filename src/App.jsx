@@ -28,7 +28,7 @@ function App() {
     <Router>
       <div className={`min-h-screen ${darkMode ? 'dark bg-gray-900 text-gray-100' : 'bg-white text-gray-900'}`}>
         <Header />
-        <main>
+        <main className="pt-[60px]">
           <Routes>
             <Route path="/" element={<Homepage />} />
             <Route path="/services" element={<Services />} />
