@@ -1,6 +1,6 @@
+import { useEffect } from 'react';
 import { Link } from 'react-router-dom';
 import { ArrowRight, TrendingUp, Zap, Users, Shield, Target, Lightbulb, Clock, Star, Award, Heart } from 'lucide-react';
-import { useEffect } from 'react';
 
 export default function Services() {
   useEffect(() => {

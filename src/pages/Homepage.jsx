@@ -1,4 +1,5 @@
-import { Link, useEffect } from 'react-router-dom';
+import { useEffect } from 'react';
+import { Link } from 'react-router-dom';
 import { ArrowRight, CheckCircle, Users, TrendingUp, Shield, Zap } from 'lucide-react';
 
 export default function Homepage() {

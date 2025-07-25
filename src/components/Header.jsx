@@ -4,7 +4,7 @@ import { Link } from 'react-router-dom';
 export default function Header() {
   const [menuOpen, setMenuOpen] = useState(false);
   return (
-    <header className="w-full bg-white dark:bg-[#0a1627] shadow-md h-[60px] flex items-center md:static md:top-0 md:z-50">
+    <header className="w-full bg-white dark:bg-[#0a1627] shadow-md h-[60px] flex items-center md:static md:top-0 md:z-50 relative z-[9999]">
       <div className="container max-w-[1200px] mx-auto px-4 flex items-center justify-between h-full">
         {/* Logo */}
         <Link to="/" className="flex items-center gap-2 md:gap-3">
