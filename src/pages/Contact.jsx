@@ -19,21 +19,42 @@ export default function Contact() {
     e.preventDefault();
     setIsSubmitting(true);
     
-    // Create email with form data
-    const subject = `Contact Form Submission from ${formData.name}`;
-    const body = `Name: ${formData.name}
-Email: ${formData.email}
-Company: ${formData.company}
-Message: ${formData.message}`;
-    
-    // Open email client with pre-filled data
-    const mailtoLink = `mailto:bnczifra77@gmail.com?subject=${encodeURIComponent(subject)}&body=${encodeURIComponent(body)}`;
-    window.open(mailtoLink);
-    
-    // Show success message
-    setIsSubmitted(true);
-    setFormData({ name: '', email: '', company: '', message: '' });
-    setIsSubmitting(false);
+    try {
+      // Send email using Web3Forms (100% free)
+      const response = await fetch('https://api.web3forms.com/submit', {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json',
+        },
+        body: JSON.stringify({
+          access_key: '4b895622-3970-4d69-8bcd-c01cd33e00ab',
+          name: formData.name,
+          email: formData.email,
+          company: formData.company,
+          message: formData.message,
+          subject: `New Contact Form Submission from ${formData.name}`,
+        }),
+      });
+      
+      const result = await response.json();
+      
+      if (result.success) {
+        setIsSubmitted(true);
+        setFormData({ name: '', email: '', company: '', message: '' });
+      } else {
+        throw new Error('Form submission failed');
+      }
+    } catch (error) {
+      console.error('Form submission error:', error);
+      // Fallback - open email client
+      const subject = `Contact Form Submission from ${formData.name}`;
+      const body = `Name: ${formData.name}\nEmail: ${formData.email}\nCompany: ${formData.company}\nMessage: ${formData.message}`;
+      const mailtoLink = `mailto:bnczifra77@gmail.com?subject=${encodeURIComponent(subject)}&body=${encodeURIComponent(body)}`;
+      window.open(mailtoLink);
+      alert('Form submitted! Your email client should open with the message pre-filled.');
+    } finally {
+      setIsSubmitting(false);
+    }
   };
 
   const handleInputChange = (e) => {
