@@ -1,18 +1,45 @@
-// To enable email submissions, sign up at https://formspree.io, create a form, and get your form ID.
-// Add your Formspree form ID to the useForm hook below (e.g., useForm('yourFormId')).
-// Optionally, store it in an environment variable (e.g., VITE_FORMSPREE_ID) and use import.meta.env.VITE_FORMSPREE_ID.
-// Docs: https://formspree.io/react/
-import { useForm, ValidationError } from '@formspree/react';
 import { Phone, Mail, MapPin, Clock, Send, CheckCircle } from 'lucide-react';
-import { useEffect } from 'react';
+import { useEffect, useState } from 'react';
 
 export default function Contact() {
-  // Replace 'yourFormId' with your actual Formspree form ID
-  const [state, handleSubmit] = useForm('xvgqablw');
+  const [isSubmitting, setIsSubmitting] = useState(false);
+  const [isSubmitted, setIsSubmitted] = useState(false);
+  const [formData, setFormData] = useState({
+    name: '',
+    email: '',
+    company: '',
+    message: ''
+  });
 
   useEffect(() => {
     document.title = 'Contact Us - Czifra Consulting';
   }, []);
+
+  const handleSubmit = async (e) => {
+    e.preventDefault();
+    setIsSubmitting(true);
+    
+    // Create email with form data
+    const subject = `Contact Form Submission from ${formData.name}`;
+    const body = `Name: ${formData.name}
+Email: ${formData.email}
+Company: ${formData.company}
+Message: ${formData.message}`;
+    
+    // Open email client with pre-filled data
+    const mailtoLink = `mailto:bnczifra77@gmail.com?subject=${encodeURIComponent(subject)}&body=${encodeURIComponent(body)}`;
+    window.open(mailtoLink);
+    
+    // Show success message
+    setIsSubmitted(true);
+    setFormData({ name: '', email: '', company: '', message: '' });
+    setIsSubmitting(false);
+  };
+
+  const handleInputChange = (e) => {
+    const { name, value } = e.target;
+    setFormData(prev => ({ ...prev, [name]: value }));
+  };
 
   return (
     <div className="min-h-screen bg-white dark:bg-[#0a1627]">
@@ -76,7 +103,7 @@ export default function Contact() {
             <div className="flex-1">
               <div className="bg-white dark:bg-[#1a2740] rounded-2xl shadow-lg p-8">
                 <h3 className="text-2xl font-bold text-[#001F54] dark:text-white mb-6">Send Us a Message</h3>
-                {state.succeeded ? (
+                {isSubmitted ? (
                   <div className="text-center py-8">
                     <CheckCircle className="w-16 h-16 text-green-500 mx-auto mb-4" />
                     <h4 className="text-xl font-bold text-[#001F54] dark:text-white mb-2">Message Sent!</h4>
@@ -90,10 +117,11 @@ export default function Contact() {
                         id="name"
                         type="text"
                         name="name"
+                        value={formData.name}
+                        onChange={handleInputChange}
                         required
                         className="w-full border border-gray-300 dark:border-gray-700 rounded-lg px-4 py-3 text-base bg-white dark:bg-[#0a1627] text-[#001F54] dark:text-white focus:outline-none focus:ring-2 focus:ring-blue-200 dark:focus:ring-blue-900 transition-colors"
                       />
-                      <ValidationError prefix="Name" field="name" errors={state.errors} />
                     </div>
                     <div>
                       <label htmlFor="email" className="block text-sm font-bold text-[#001F54] dark:text-white mb-2">Email *</label>
@@ -101,29 +129,41 @@ export default function Contact() {
                         id="email"
                         type="email"
                         name="email"
+                        value={formData.email}
+                        onChange={handleInputChange}
                         required
                         className="w-full border border-gray-300 dark:border-gray-700 rounded-lg px-4 py-3 text-base bg-white dark:bg-[#0a1627] text-[#001F54] dark:text-white focus:outline-none focus:ring-2 focus:ring-blue-200 dark:focus:ring-blue-900 transition-colors"
                       />
-                      <ValidationError prefix="Email" field="email" errors={state.errors} />
+                    </div>
+                    <div>
+                      <label htmlFor="company" className="block text-sm font-bold text-[#001F54] dark:text-white mb-2">Company</label>
+                      <input
+                        id="company"
+                        type="text"
+                        name="company"
+                        value={formData.company}
+                        onChange={handleInputChange}
+                        className="w-full border border-gray-300 dark:border-gray-700 rounded-lg px-4 py-3 text-base bg-white dark:bg-[#0a1627] text-[#001F54] dark:text-white focus:outline-none focus:ring-2 focus:ring-blue-200 dark:focus:ring-blue-900 transition-colors"
+                      />
                     </div>
                     <div>
                       <label htmlFor="message" className="block text-sm font-bold text-[#001F54] dark:text-white mb-2">Message *</label>
                       <textarea
                         id="message"
                         name="message"
+                        value={formData.message}
+                        onChange={handleInputChange}
                         required
                         rows="5"
                         className="w-full border border-gray-300 dark:border-gray-700 rounded-lg px-4 py-3 text-base bg-white dark:bg-[#0a1627] text-[#001F54] dark:text-white focus:outline-none focus:ring-2 focus:ring-blue-200 dark:focus:ring-blue-900 transition-colors resize-none"
                       />
-                      <ValidationError prefix="Message" field="message" errors={state.errors} />
                     </div>
-                    {/* Calendly embed or meeting booking can go here if desired */}
                     <button
                       type="submit"
-                      disabled={state.submitting}
+                      disabled={isSubmitting}
                       className="w-full bg-[#001F54] dark:bg-blue-900 text-white text-lg px-6 py-4 rounded-lg font-bold shadow hover:scale-105 hover:bg-blue-900 dark:hover:bg-blue-800 transition-all duration-300 disabled:opacity-50 disabled:cursor-not-allowed disabled:scale-100 flex items-center justify-center gap-2"
                     >
-                      {state.submitting ? (
+                      {isSubmitting ? (
                         <>
                           <div className="w-5 h-5 border-2 border-white border-t-transparent rounded-full animate-spin"></div>
                           Sending...
