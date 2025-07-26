@@ -1,8 +1,11 @@
-import { useEffect } from 'react';
+import { useEffect, useState } from 'react';
 import { Link } from 'react-router-dom';
-import { ArrowRight, CheckCircle, Users, TrendingUp, Shield, Zap } from 'lucide-react';
+import { ArrowRight, CheckCircle, Users, TrendingUp, Shield, Zap, Send, X } from 'lucide-react';
 
 export default function Homepage() {
+  const [isSubmitting, setIsSubmitting] = useState(false);
+  const [showSuccessModal, setShowSuccessModal] = useState(false);
+
   useEffect(() => {
     document.title = 'Czifra Consulting - Empowering Small Business Owners';
   }, []);
@@ -14,8 +17,96 @@ export default function Homepage() {
     }
   };
 
+  const handleSubmit = async () => {
+    console.log('=== HOMEPAGE FORM SUBMISSION TRIGGERED ===');
+    
+    setIsSubmitting(true);
+    
+    // Get form data from DOM elements
+    const name = document.getElementById('name').value;
+    const email = document.getElementById('email').value;
+    const company = document.getElementById('company').value;
+    const message = document.getElementById('message').value;
+    
+    console.log('Homepage form data:', { name, email, company, message });
+    
+    // Validate required fields
+    if (!name || !email || !message) {
+      alert('Please fill in all required fields (Name, Email, and Message)');
+      setIsSubmitting(false);
+      return;
+    }
+    
+    try {
+      // Use Formspree
+      const response = await fetch('https://formspree.io/f/xvgqablw', {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json',
+        },
+        body: JSON.stringify({
+          name: name,
+          email: email,
+          company: company,
+          message: message,
+        }),
+      });
+      
+      console.log('Formspree response status:', response.status);
+      
+      if (response.ok) {
+        console.log('Success! Email sent via Formspree');
+        setShowSuccessModal(true);
+        // Reset form
+        document.getElementById('name').value = '';
+        document.getElementById('email').value = '';
+        document.getElementById('company').value = '';
+        document.getElementById('message').value = '';
+      } else {
+        throw new Error('Formspree failed');
+      }
+      
+    } catch (error) {
+      console.error('Formspree failed:', error);
+      alert('There was an error sending your message. Please email us directly at bnczifra77@gmail.com');
+    } finally {
+      setIsSubmitting(false);
+    }
+  };
+
+  const closeSuccessModal = () => {
+    setShowSuccessModal(false);
+  };
+
   return (
     <div className="min-h-screen">
+      {/* Success Modal */}
+      {showSuccessModal && (
+        <div className="fixed inset-0 bg-black bg-opacity-50 flex items-center justify-center z-50">
+          <div className="bg-white dark:bg-[#1a2740] rounded-2xl p-8 max-w-md mx-4 relative">
+            <button
+              onClick={closeSuccessModal}
+              className="absolute top-4 right-4 text-gray-400 hover:text-gray-600 dark:hover:text-gray-200"
+            >
+              <X className="w-6 h-6" />
+            </button>
+            <div className="text-center">
+              <CheckCircle className="w-16 h-16 text-green-500 mx-auto mb-4" />
+              <h3 className="text-2xl font-bold text-[#001F54] dark:text-white mb-2">Message Sent Successfully!</h3>
+              <p className="text-gray-600 dark:text-gray-300 mb-6">
+                Thank you for reaching out! We've received your message and will get back to you within 24 hours.
+              </p>
+              <button
+                onClick={closeSuccessModal}
+                className="bg-[#001F54] dark:bg-blue-900 text-white px-6 py-3 rounded-lg font-bold hover:bg-blue-900 dark:hover:bg-blue-800 transition-colors"
+              >
+                Got It!
+              </button>
+            </div>
+          </div>
+        </div>
+      )}
+
       {/* Hero Section */}
       <section className="bg-gradient-to-br from-[#001F54] to-[#1e40af] text-white py-20 md:py-32">
         <div className="container max-w-[1200px] mx-auto px-4">
@@ -172,7 +263,7 @@ export default function Homepage() {
           </div>
           <div className="flex flex-col md:flex-row gap-6 md:gap-10">
             {/* Left: Form */}
-            <form className="flex-1 bg-white dark:bg-[#1a2740] rounded-2xl shadow-lg p-6 md:p-8 flex flex-col gap-4">
+            <div className="flex-1 bg-white dark:bg-[#1a2740] rounded-2xl shadow-lg p-6 md:p-8 flex flex-col gap-4">
               <div>
                 <label htmlFor="name" className="block text-sm font-bold text-[#001F54] dark:text-white mb-1">Name *</label>
                 <input 
@@ -214,12 +305,24 @@ export default function Homepage() {
                 />
               </div>
               <button 
-                type="submit" 
-                className="w-full bg-[#001F54] dark:bg-blue-900 text-white text-lg px-6 py-4 rounded-lg font-bold shadow hover:scale-105 hover:bg-blue-900 dark:hover:bg-blue-800 transition-all duration-300"
+                type="button"
+                onClick={handleSubmit}
+                disabled={isSubmitting}
+                className="w-full bg-[#001F54] dark:bg-blue-900 text-white text-lg px-6 py-4 rounded-lg font-bold shadow hover:scale-105 hover:bg-blue-900 dark:hover:bg-blue-800 transition-all duration-300 disabled:opacity-50 disabled:cursor-not-allowed disabled:scale-100 flex items-center justify-center gap-2"
               >
-                Send Message
+                {isSubmitting ? (
+                  <>
+                    <div className="w-5 h-5 border-2 border-white border-t-transparent rounded-full animate-spin"></div>
+                    Sending...
+                  </>
+                ) : (
+                  <>
+                    <Send className="w-5 h-5" />
+                    Send Message
+                  </>
+                )}
               </button>
-            </form>
+            </div>
             {/* Right: Company Info */}
             <div className="flex-1 bg-[#001F54] dark:bg-[#1a2740] rounded-2xl p-6 md:p-8 flex flex-col gap-4 text-white shadow-lg">
               <div>

@@ -12,7 +12,6 @@ export default function Contact() {
   }, []);
 
   const handleSubmit = async () => {
-    alert('Form submission started! Check console for details.');
     console.log('=== FORM SUBMISSION TRIGGERED ===');
     
     setIsSubmitting(true);
@@ -25,10 +24,15 @@ export default function Contact() {
     
     console.log('Form data:', { name, email, company, message });
     
-    // Method 1: Try Formspree first
+    // Validate required fields
+    if (!name || !email || !message) {
+      alert('Please fill in all required fields (Name, Email, and Message)');
+      setIsSubmitting(false);
+      return;
+    }
+    
     try {
-      console.log('Trying Formspree method...');
-      
+      // Use Formspree
       const response = await fetch('https://formspree.io/f/xvgqablw', {
         method: 'POST',
         headers: {
@@ -53,75 +57,13 @@ export default function Contact() {
         document.getElementById('email').value = '';
         document.getElementById('company').value = '';
         document.getElementById('message').value = '';
-        return;
       } else {
         throw new Error('Formspree failed');
       }
       
     } catch (error) {
-      console.error('Formspree failed, trying Web3Forms:', error);
-      
-      // Method 2: Try Web3Forms
-      try {
-        const payload = {
-          access_key: '4b895622-3970-4d69-8bcd-c01cd33e00ab',
-          name: name,
-          email: email,
-          company: company,
-          message: message,
-          subject: `New Contact Form Submission from ${name}`,
-        };
-        
-        console.log('Sending to Web3Forms:', payload);
-        
-        const response = await fetch('https://api.web3forms.com/submit', {
-          method: 'POST',
-          headers: {
-            'Content-Type': 'application/json',
-          },
-          body: JSON.stringify(payload),
-        });
-        
-        console.log('Web3Forms response status:', response.status);
-        const result = await response.json();
-        console.log('Web3Forms result:', result);
-        
-        if (result.success) {
-          console.log('Success! Email sent via Web3Forms');
-          setIsSubmitted(true);
-          setShowSuccessModal(true);
-          // Reset form
-          document.getElementById('name').value = '';
-          document.getElementById('email').value = '';
-          document.getElementById('company').value = '';
-          document.getElementById('message').value = '';
-          return;
-        } else {
-          throw new Error('Web3Forms failed');
-        }
-        
-      } catch (web3formsError) {
-        console.error('Web3Forms failed, trying mailto fallback:', web3formsError);
-        
-        // Method 3: Fallback to mailto
-        const subject = `Contact Form Submission from ${name}`;
-        const body = `Name: ${name}\nEmail: ${email}\nCompany: ${company}\nMessage: ${message}`;
-        const mailtoLink = `mailto:bnczifra77@gmail.com?subject=${encodeURIComponent(subject)}&body=${encodeURIComponent(body)}`;
-        
-        console.log('Opening mailto link:', mailtoLink);
-        window.open(mailtoLink);
-        
-        // Show success modal even for mailto fallback
-        setIsSubmitted(true);
-        setShowSuccessModal(true);
-        // Reset form
-        document.getElementById('name').value = '';
-        document.getElementById('email').value = '';
-        document.getElementById('company').value = '';
-        document.getElementById('message').value = '';
-        
-        alert('Form submitted! Your email client should open with the message pre-filled. Please send the email manually.');
-      }
+      console.error('Formspree failed:', error);
+      alert('There was an error sending your message. Please email us directly at bnczifra77@gmail.com');
     } finally {
       setIsSubmitting(false);
     }
@@ -153,7 +95,7 @@ export default function Contact() {
                 onClick={closeSuccessModal}
                 className="bg-[#001F54] dark:bg-blue-900 text-white px-6 py-3 rounded-lg font-bold hover:bg-blue-900 dark:hover:bg-blue-800 transition-colors"
               >
-                Close
+                Got It!
               </button>
             </div>
           </div>
@@ -223,7 +165,7 @@ export default function Contact() {
               <div className="bg-white dark:bg-[#1a2740] rounded-2xl shadow-lg p-8">
                 <h3 className="text-2xl font-bold text-[#001F54] dark:text-white mb-6">Send Us a Message</h3>
                 
-                <form onSubmit={(e) => { e.preventDefault(); return false; }} className="space-y-6">
+                <div className="space-y-6">
                   <div>
                     <label htmlFor="name" className="block text-sm font-bold text-[#001F54] dark:text-white mb-2">Name *</label>
                     <input
@@ -276,7 +218,7 @@ export default function Contact() {
                     {isSubmitting ? (
                       <>
                         <div className="w-5 h-5 border-2 border-white border-t-transparent rounded-full animate-spin"></div>
-                        Sending...
+                        Opening Email...
                       </>
                     ) : (
                       <>
@@ -285,7 +227,7 @@ export default function Contact() {
                       </>
                     )}
                   </button>
-                </form>
+                </div>
               </div>
             </div>
           </div>
