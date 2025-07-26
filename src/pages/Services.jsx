@@ -1,8 +1,11 @@
-import { useEffect } from 'react';
+import { useEffect, useState } from 'react';
 import { Link } from 'react-router-dom';
-import { ArrowRight, TrendingUp, Zap, Users, Shield, Target, Lightbulb, Clock, Star, Award, Heart } from 'lucide-react';
+import { ArrowRight, TrendingUp, Zap, Users, Shield, Target, Lightbulb, Clock, Star, Award, Heart, Send, CheckCircle, X } from 'lucide-react';
 
 export default function Services() {
+  const [isSubmitting, setIsSubmitting] = useState(false);
+  const [showSuccessModal, setShowSuccessModal] = useState(false);
+
   useEffect(() => {
     document.title = 'Services - Czifra Consulting';
   }, []);
@@ -12,6 +15,67 @@ export default function Services() {
     if (contactSection) {
       contactSection.scrollIntoView({ behavior: 'smooth' });
     }
+  };
+
+  const handleSubmit = async () => {
+    setIsSubmitting(true);
+    
+    // Get form data from DOM elements
+    const name = document.getElementById('name').value;
+    const email = document.getElementById('email').value;
+    const company = document.getElementById('company').value;
+    const message = document.getElementById('message').value;
+    
+    // Validate required fields
+    if (!name || !email || !message) {
+      alert('Please fill in all required fields (Name, Email, and Message)');
+      setIsSubmitting(false);
+      return;
+    }
+    
+    // Validate email format
+    const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
+    if (!emailRegex.test(email)) {
+      alert('Please enter a valid email address');
+      setIsSubmitting(false);
+      return;
+    }
+    
+    try {
+      // Use Formspree
+      const response = await fetch('https://formspree.io/f/xvgqablw', {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json',
+        },
+        body: JSON.stringify({
+          name: name,
+          email: email,
+          company: company,
+          message: message,
+        }),
+      });
+      
+      if (response.ok) {
+        setShowSuccessModal(true);
+        // Reset form
+        document.getElementById('name').value = '';
+        document.getElementById('email').value = '';
+        document.getElementById('company').value = '';
+        document.getElementById('message').value = '';
+      } else {
+        throw new Error('Formspree failed');
+      }
+      
+    } catch (error) {
+      alert('There was an error sending your message. Please email us directly at bnczifra77@gmail.com');
+    } finally {
+      setIsSubmitting(false);
+    }
+  };
+
+  const closeSuccessModal = () => {
+    setShowSuccessModal(false);
   };
 
   const services = [
@@ -85,6 +149,33 @@ export default function Services() {
 
   return (
     <div className="min-h-screen bg-white dark:bg-[#0a1627]">
+      {/* Success Modal */}
+      {showSuccessModal && (
+        <div className="fixed inset-0 bg-black bg-opacity-50 flex items-center justify-center z-50">
+          <div className="bg-white dark:bg-[#1a2740] rounded-2xl p-8 max-w-md mx-4 relative">
+            <button
+              onClick={closeSuccessModal}
+              className="absolute top-4 right-4 text-gray-400 hover:text-gray-600 dark:hover:text-gray-200"
+            >
+              <X className="w-6 h-6" />
+            </button>
+            <div className="text-center">
+              <CheckCircle className="w-16 h-16 text-green-500 mx-auto mb-4" />
+              <h3 className="text-2xl font-bold text-[#001F54] dark:text-white mb-2">Message Sent Successfully!</h3>
+              <p className="text-gray-600 dark:text-gray-300 mb-6">
+                Thank you for reaching out! We've received your message and will get back to you within 24 hours.
+              </p>
+              <button
+                onClick={closeSuccessModal}
+                className="bg-[#001F54] dark:bg-blue-900 text-white px-6 py-3 rounded-lg font-bold hover:bg-blue-900 dark:hover:bg-blue-800 transition-colors"
+              >
+                Got It!
+              </button>
+            </div>
+          </div>
+        </div>
+      )}
+
       {/* Hero Section */}
       <section className="bg-gradient-to-br from-[#001F54] to-[#1e40af] text-white py-20">
         <div className="container max-w-[1200px] mx-auto px-4 text-center">
@@ -223,54 +314,73 @@ export default function Services() {
           </div>
           <div className="flex flex-col md:flex-row gap-6 md:gap-10">
             {/* Left: Form */}
-            <form className="flex-1 bg-white dark:bg-[#1a2740] rounded-2xl shadow-lg p-6 md:p-8 flex flex-col gap-4">
-              <div>
-                <label htmlFor="name" className="block text-sm font-bold text-[#001F54] dark:text-white mb-1">Name *</label>
-                <input 
-                  id="name" 
-                  type="text" 
-                  required
-                  placeholder="Your Name" 
-                  className="w-full border border-gray-300 dark:border-gray-700 rounded-lg px-4 py-3 text-base bg-white dark:bg-[#0a1627] text-[#001F54] dark:text-white focus:outline-none focus:ring-2 focus:ring-blue-200 dark:focus:ring-blue-900" 
-                />
-              </div>
-              <div className="flex flex-col md:flex-row gap-4">
-                <div className="flex-1">
-                  <label htmlFor="email" className="block text-sm font-bold text-[#001F54] dark:text-white mb-1">Email *</label>
-                  <input 
-                    id="email" 
-                    type="email" 
-                    required
-                    placeholder="john@company.com" 
-                    className="w-full border border-gray-300 dark:border-gray-700 rounded-lg px-4 py-3 text-base bg-white dark:bg-[#0a1627] text-[#001F54] dark:text-white focus:outline-none focus:ring-2 focus:ring-blue-200 dark:focus:ring-blue-900" 
-                  />
-                </div>
-                <div className="flex-1">
-                  <label htmlFor="company" className="block text-sm font-bold text-[#001F54] dark:text-white mb-1">Company</label>
-                  <input 
-                    id="company" 
-                    type="text" 
-                    placeholder="Your Company" 
-                    className="w-full border border-gray-300 dark:border-gray-700 rounded-lg px-4 py-3 text-base bg-white dark:bg-[#0a1627] text-[#001F54] dark:text-white focus:outline-none focus:ring-2 focus:ring-blue-200 dark:focus:ring-blue-900" 
-                  />
-                </div>
-              </div>
-              <div>
-                <label htmlFor="message" className="block text-sm font-bold text-[#001F54] dark:text-white mb-1">Message *</label>
-                <textarea 
-                  id="message" 
-                  required
-                  placeholder="Tell us about your business challenges and goals..." 
-                  className="w-full border border-gray-300 dark:border-gray-700 rounded-lg px-4 py-3 text-base h-32 resize-none bg-white dark:bg-[#0a1627] text-[#001F54] dark:text-white focus:outline-none focus:ring-2 focus:ring-blue-200 dark:focus:ring-blue-900" 
-                />
-              </div>
-              <button 
-                type="submit" 
-                className="w-full bg-[#001F54] dark:bg-blue-900 text-white text-lg px-6 py-4 rounded-lg font-bold shadow hover:scale-105 hover:bg-blue-900 dark:hover:bg-blue-800 transition-all duration-300"
+            <div className="flex-1 bg-white dark:bg-[#1a2740] rounded-2xl shadow-lg p-6 md:p-8 flex flex-col gap-4">
+              <div
+                onSubmit={(e) => {
+                  e.preventDefault();
+                  return false;
+                }}
               >
-                Send Message
-              </button>
-            </form>
+                <div>
+                  <label htmlFor="name" className="block text-sm font-bold text-[#001F54] dark:text-white mb-1">Name *</label>
+                  <input 
+                    id="name" 
+                    type="text" 
+                    required
+                    placeholder="Your Name" 
+                    className="w-full border border-gray-300 dark:border-gray-700 rounded-lg px-4 py-3 text-base bg-white dark:bg-[#0a1627] text-[#001F54] dark:text-white focus:outline-none focus:ring-2 focus:ring-blue-200 dark:focus:ring-blue-900" 
+                  />
+                </div>
+                <div className="flex flex-col md:flex-row gap-4">
+                  <div className="flex-1">
+                    <label htmlFor="email" className="block text-sm font-bold text-[#001F54] dark:text-white mb-1">Email *</label>
+                    <input 
+                      id="email" 
+                      type="email" 
+                      required
+                      placeholder="john@company.com" 
+                      className="w-full border border-gray-300 dark:border-gray-700 rounded-lg px-4 py-3 text-base bg-white dark:bg-[#0a1627] text-[#001F54] dark:text-white focus:outline-none focus:ring-2 focus:ring-blue-200 dark:focus:ring-blue-900" 
+                    />
+                  </div>
+                  <div className="flex-1">
+                    <label htmlFor="company" className="block text-sm font-bold text-[#001F54] dark:text-white mb-1">Company</label>
+                    <input 
+                      id="company" 
+                      type="text" 
+                      placeholder="Your Company" 
+                      className="w-full border border-gray-300 dark:border-gray-700 rounded-lg px-4 py-3 text-base bg-white dark:bg-[#0a1627] text-[#001F54] dark:text-white focus:outline-none focus:ring-2 focus:ring-blue-200 dark:focus:ring-blue-900" 
+                    />
+                  </div>
+                </div>
+                <div>
+                  <label htmlFor="message" className="block text-sm font-bold text-[#001F54] dark:text-white mb-1">Message *</label>
+                  <textarea 
+                    id="message" 
+                    required
+                    placeholder="Tell us about your business challenges and goals..." 
+                    className="w-full border border-gray-300 dark:border-gray-700 rounded-lg px-4 py-3 text-base h-32 resize-none bg-white dark:bg-[#0a1627] text-[#001F54] dark:text-white focus:outline-none focus:ring-2 focus:ring-blue-200 dark:focus:ring-blue-900" 
+                  />
+                </div>
+                <button 
+                  type="button"
+                  onClick={handleSubmit}
+                  disabled={isSubmitting}
+                  className="w-full bg-[#001F54] dark:bg-blue-900 text-white text-lg px-6 py-4 rounded-lg font-bold shadow hover:scale-105 hover:bg-blue-900 dark:hover:bg-blue-800 transition-all duration-300 disabled:opacity-50 disabled:cursor-not-allowed disabled:scale-100 flex items-center justify-center gap-2"
+                >
+                  {isSubmitting ? (
+                    <>
+                      <div className="w-5 h-5 border-2 border-white border-t-transparent rounded-full animate-spin"></div>
+                      Sending...
+                    </>
+                  ) : (
+                    <>
+                      <Send className="w-5 h-5" />
+                      Send Message
+                    </>
+                  )}
+                </button>
+              </div>
+            </div>
             {/* Right: Company Info */}
             <div className="flex-1 bg-[#001F54] dark:bg-[#1a2740] rounded-2xl p-6 md:p-8 flex flex-col gap-4 text-white shadow-lg">
               <div>

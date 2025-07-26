@@ -18,8 +18,6 @@ export default function Homepage() {
   };
 
   const handleSubmit = async () => {
-    console.log('=== HOMEPAGE FORM SUBMISSION TRIGGERED ===');
-    
     setIsSubmitting(true);
     
     // Get form data from DOM elements
@@ -28,11 +26,17 @@ export default function Homepage() {
     const company = document.getElementById('company').value;
     const message = document.getElementById('message').value;
     
-    console.log('Homepage form data:', { name, email, company, message });
-    
     // Validate required fields
     if (!name || !email || !message) {
       alert('Please fill in all required fields (Name, Email, and Message)');
+      setIsSubmitting(false);
+      return;
+    }
+    
+    // Validate email format
+    const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
+    if (!emailRegex.test(email)) {
+      alert('Please enter a valid email address');
       setIsSubmitting(false);
       return;
     }
@@ -52,10 +56,7 @@ export default function Homepage() {
         }),
       });
       
-      console.log('Formspree response status:', response.status);
-      
       if (response.ok) {
-        console.log('Success! Email sent via Formspree');
         setShowSuccessModal(true);
         // Reset form
         document.getElementById('name').value = '';
@@ -67,7 +68,6 @@ export default function Homepage() {
       }
       
     } catch (error) {
-      console.error('Formspree failed:', error);
       alert('There was an error sending your message. Please email us directly at bnczifra77@gmail.com');
     } finally {
       setIsSubmitting(false);
@@ -109,7 +109,7 @@ export default function Homepage() {
 
       {/* Hero Section */}
       <section className="bg-gradient-to-br from-[#001F54] to-[#1e40af] text-white py-20 md:py-32">
-        <div className="container max-w-[1200px] mx-auto px-4">
+        <div className="container-responsive">
           <div className="flex flex-col md:flex-row items-center gap-8 md:gap-12">
             {/* Left Content */}
             <div className="flex-1 text-center md:text-left">
@@ -166,7 +166,7 @@ export default function Homepage() {
 
       {/* Focus on YOU Section */}
       <section className="py-20 bg-white dark:bg-[#0a1627]">
-        <div className="container max-w-[1200px] mx-auto px-4">
+        <div className="container-responsive">
           <div className="flex flex-col lg:flex-row items-center gap-12">
             {/* Left: Image */}
             <div className="flex-1">
@@ -213,7 +213,7 @@ export default function Homepage() {
 
       {/* Services Teaser */}
       <section className="py-20 bg-gray-50 dark:bg-[#1a2740]">
-        <div className="container max-w-[1200px] mx-auto px-4">
+        <div className="container-responsive">
           <div className="text-center mb-12">
             <h2 className="text-3xl md:text-4xl font-bold text-[#001F54] dark:text-white mb-4">
               Our Services
@@ -252,7 +252,7 @@ export default function Homepage() {
 
       {/* Contact Section */}
       <section id="contact" className="py-20 bg-white dark:bg-[#0a1627]">
-        <div className="container max-w-[1200px] mx-auto px-4">
+        <div className="container-responsive">
           <div className="text-center mb-12">
             <h2 className="text-3xl md:text-4xl font-bold text-[#001F54] dark:text-white mb-4">
               Get In Touch
@@ -277,7 +277,8 @@ export default function Homepage() {
                     type="text" 
                     required
                     placeholder="Your Name" 
-                    className="w-full border border-gray-300 dark:border-gray-700 rounded-lg px-4 py-3 text-base bg-white dark:bg-[#0a1627] text-[#001F54] dark:text-white focus:outline-none focus:ring-2 focus:ring-blue-200 dark:focus:ring-blue-900" 
+                    className="w-full border border-gray-300 dark:border-gray-700 rounded-lg px-4 py-4 text-base bg-white dark:bg-[#0a1627] text-[#001F54] dark:text-white focus:outline-none focus:ring-2 focus:ring-blue-200 dark:focus:ring-blue-900 touch-target" 
+                    autoComplete="name"
                   />
                 </div>
                 <div className="flex flex-col md:flex-row gap-4">
@@ -288,7 +289,8 @@ export default function Homepage() {
                       type="email" 
                       required
                       placeholder="john@company.com" 
-                      className="w-full border border-gray-300 dark:border-gray-700 rounded-lg px-4 py-3 text-base bg-white dark:bg-[#0a1627] text-[#001F54] dark:text-white focus:outline-none focus:ring-2 focus:ring-blue-200 dark:focus:ring-blue-900" 
+                      className="w-full border border-gray-300 dark:border-gray-700 rounded-lg px-4 py-4 text-base bg-white dark:bg-[#0a1627] text-[#001F54] dark:text-white focus:outline-none focus:ring-2 focus:ring-blue-200 dark:focus:ring-blue-900 touch-target" 
+                      autoComplete="email"
                     />
                   </div>
                   <div className="flex-1">
@@ -297,7 +299,8 @@ export default function Homepage() {
                       id="company" 
                       type="text" 
                       placeholder="Your Company" 
-                      className="w-full border border-gray-300 dark:border-gray-700 rounded-lg px-4 py-3 text-base bg-white dark:bg-[#0a1627] text-[#001F54] dark:text-white focus:outline-none focus:ring-2 focus:ring-blue-200 dark:focus:ring-blue-900" 
+                      className="w-full border border-gray-300 dark:border-gray-700 rounded-lg px-4 py-4 text-base bg-white dark:bg-[#0a1627] text-[#001F54] dark:text-white focus:outline-none focus:ring-2 focus:ring-blue-200 dark:focus:ring-blue-900 touch-target" 
+                      autoComplete="organization"
                     />
                   </div>
                 </div>
@@ -307,14 +310,15 @@ export default function Homepage() {
                     id="message" 
                     required
                     placeholder="Tell us about your business challenges and goals..." 
-                    className="w-full border border-gray-300 dark:border-gray-700 rounded-lg px-4 py-3 text-base h-32 resize-none bg-white dark:bg-[#0a1627] text-[#001F54] dark:text-white focus:outline-none focus:ring-2 focus:ring-blue-200 dark:focus:ring-blue-900" 
+                    className="w-full border border-gray-300 dark:border-gray-700 rounded-lg px-4 py-4 text-base h-32 resize-none bg-white dark:bg-[#0a1627] text-[#001F54] dark:text-white focus:outline-none focus:ring-2 focus:ring-blue-200 dark:focus:ring-blue-900 touch-target" 
+                    autoComplete="off"
                   />
                 </div>
                 <button 
                   type="button"
                   onClick={handleSubmit}
                   disabled={isSubmitting}
-                  className="w-full bg-[#001F54] dark:bg-blue-900 text-white text-lg px-6 py-4 rounded-lg font-bold shadow hover:scale-105 hover:bg-blue-900 dark:hover:bg-blue-800 transition-all duration-300 disabled:opacity-50 disabled:cursor-not-allowed disabled:scale-100 flex items-center justify-center gap-2"
+                  className="w-full bg-[#001F54] dark:bg-blue-900 text-white text-lg px-6 py-4 rounded-lg font-bold shadow hover:scale-105 hover:bg-blue-900 dark:hover:bg-blue-800 transition-all duration-300 disabled:opacity-50 disabled:cursor-not-allowed disabled:scale-100 flex items-center justify-center gap-2 touch-target hover-lift"
                 >
                   {isSubmitting ? (
                     <>

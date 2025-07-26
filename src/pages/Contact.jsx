@@ -2,18 +2,15 @@ import { Phone, Mail, MapPin, Clock, Send, CheckCircle, X } from 'lucide-react';
 import { useEffect, useState } from 'react';
 
 export default function Contact() {
-  const [isSubmitted, setIsSubmitted] = useState(false);
   const [isSubmitting, setIsSubmitting] = useState(false);
+  const [isSubmitted, setIsSubmitted] = useState(false);
   const [showSuccessModal, setShowSuccessModal] = useState(false);
 
   useEffect(() => {
     document.title = 'Contact Us - Czifra Consulting';
-    console.log('Contact component loaded successfully');
   }, []);
 
   const handleSubmit = async () => {
-    console.log('=== FORM SUBMISSION TRIGGERED ===');
-    
     setIsSubmitting(true);
     
     // Get form data from DOM elements
@@ -22,11 +19,17 @@ export default function Contact() {
     const company = document.getElementById('company').value;
     const message = document.getElementById('message').value;
     
-    console.log('Form data:', { name, email, company, message });
-    
     // Validate required fields
     if (!name || !email || !message) {
       alert('Please fill in all required fields (Name, Email, and Message)');
+      setIsSubmitting(false);
+      return;
+    }
+    
+    // Validate email format
+    const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
+    if (!emailRegex.test(email)) {
+      alert('Please enter a valid email address');
       setIsSubmitting(false);
       return;
     }
@@ -46,10 +49,7 @@ export default function Contact() {
         }),
       });
       
-      console.log('Formspree response status:', response.status);
-      
       if (response.ok) {
-        console.log('Success! Email sent via Formspree');
         setIsSubmitted(true);
         setShowSuccessModal(true);
         // Reset form
@@ -62,7 +62,6 @@ export default function Contact() {
       }
       
     } catch (error) {
-      console.error('Formspree failed:', error);
       alert('There was an error sending your message. Please email us directly at bnczifra77@gmail.com');
     } finally {
       setIsSubmitting(false);
