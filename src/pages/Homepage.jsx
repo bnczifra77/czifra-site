@@ -1,11 +1,9 @@
-import { useEffect, useState } from 'react';
+import { useEffect } from 'react';
 import { Link } from 'react-router-dom';
-import { ArrowRight, CheckCircle, Users, TrendingUp, Shield, Zap, Send, X } from 'lucide-react';
+import { ArrowRight, CheckCircle, Users, TrendingUp, Shield, Zap } from 'lucide-react';
+import ContactForm from '../components/ContactForm.jsx';
 
 export default function Homepage() {
-  const [isSubmitting, setIsSubmitting] = useState(false);
-  const [showSuccessModal, setShowSuccessModal] = useState(false);
-
   useEffect(() => {
     document.title = 'Czifra Consulting - Empowering Small Business Owners';
   }, []);
@@ -17,99 +15,12 @@ export default function Homepage() {
     }
   };
 
-  const handleSubmit = async () => {
-    setIsSubmitting(true);
-    
-    // Get form data from DOM elements
-    const name = document.getElementById('name').value;
-    const email = document.getElementById('email').value;
-    const company = document.getElementById('company').value;
-    const message = document.getElementById('message').value;
-    
-    // Validate required fields
-    if (!name || !email || !message) {
-      alert('Please fill in all required fields (Name, Email, and Message)');
-      setIsSubmitting(false);
-      return;
-    }
-    
-    // Validate email format
-    const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
-    if (!emailRegex.test(email)) {
-      alert('Please enter a valid email address');
-      setIsSubmitting(false);
-      return;
-    }
-    
-    try {
-      // Use Formspree
-      const response = await fetch('https://formspree.io/f/xvgqablw', {
-        method: 'POST',
-        headers: {
-          'Content-Type': 'application/json',
-        },
-        body: JSON.stringify({
-          name: name,
-          email: email,
-          company: company,
-          message: message,
-        }),
-      });
-      
-      if (response.ok) {
-        setShowSuccessModal(true);
-        // Reset form
-        document.getElementById('name').value = '';
-        document.getElementById('email').value = '';
-        document.getElementById('company').value = '';
-        document.getElementById('message').value = '';
-      } else {
-        throw new Error('Formspree failed');
-      }
-      
-    } catch (error) {
-      alert('There was an error sending your message. Please email us directly at bnczifra77@gmail.com');
-    } finally {
-      setIsSubmitting(false);
-    }
-  };
-
-  const closeSuccessModal = () => {
-    setShowSuccessModal(false);
-  };
-
   return (
     <div className="min-h-screen">
-      {/* Success Modal */}
-      {showSuccessModal && (
-        <div className="fixed inset-0 bg-black bg-opacity-50 flex items-center justify-center z-50">
-          <div className="bg-white dark:bg-[#1a2740] rounded-2xl p-8 max-w-md mx-4 relative">
-            <button
-              onClick={closeSuccessModal}
-              className="absolute top-4 right-4 text-gray-400 hover:text-gray-600 dark:hover:text-gray-200"
-            >
-              <X className="w-6 h-6" />
-            </button>
-            <div className="text-center">
-              <CheckCircle className="w-16 h-16 text-green-500 mx-auto mb-4" />
-              <h3 className="text-2xl font-bold text-[#001F54] dark:text-white mb-2">Message Sent Successfully!</h3>
-              <p className="text-gray-600 dark:text-gray-300 mb-6">
-                Thank you for reaching out! We've received your message and will get back to you within 24 hours.
-              </p>
-              <button
-                onClick={closeSuccessModal}
-                className="bg-[#001F54] dark:bg-blue-900 text-white px-6 py-3 rounded-lg font-bold hover:bg-blue-900 dark:hover:bg-blue-800 transition-colors"
-              >
-                Got It!
-              </button>
-            </div>
-          </div>
-        </div>
-      )}
 
       {/* Hero Section */}
       <section className="bg-gradient-to-br from-[#001F54] to-[#1e40af] text-white py-20 md:py-32">
-        <div className="container-responsive">
+        <div className="container max-w-[1200px] mx-auto px-4">
           <div className="flex flex-col md:flex-row items-center gap-8 md:gap-12">
             {/* Left Content */}
             <div className="flex-1 text-center md:text-left">
@@ -121,13 +32,13 @@ export default function Homepage() {
                 YOUR challenges, and YOUR success. We don't just optimize your business—we empower YOU.
               </p>
               <div className="flex flex-col sm:flex-row gap-4 justify-center md:justify-start">
-                <button 
-                  onClick={scrollToContact}
+                <Link 
+                  to="/about"
                   className="bg-white text-[#001F54] px-8 py-4 rounded-lg font-bold text-lg hover:bg-blue-50 transition-all duration-300 hover:scale-105 flex items-center justify-center gap-2"
                 >
                   Learn More
                   <ArrowRight className="w-5 h-5" />
-                </button>
+                </Link>
                 <button 
                   onClick={scrollToContact}
                   className="border-2 border-white text-white px-8 py-4 rounded-lg font-bold text-lg hover:bg-white hover:text-[#001F54] transition-all duration-300 hover:scale-105"
@@ -165,8 +76,8 @@ export default function Homepage() {
       </section>
 
       {/* Focus on YOU Section */}
-      <section className="py-20 bg-white dark:bg-[#0a1627]">
-        <div className="container-responsive">
+      <section className="py-20 bg-white dark:bg-[#0a1627] text-gray-900 dark:text-white">
+        <div className="container max-w-[1200px] mx-auto px-4">
           <div className="flex flex-col lg:flex-row items-center gap-12">
             {/* Left: Image */}
             <div className="flex-1">
@@ -200,25 +111,25 @@ export default function Homepage() {
                   <span className="text-gray-700 dark:text-gray-300">Build Your Team</span>
                 </div>
               </div>
-              <button 
-                onClick={scrollToContact}
-                className="bg-[#001F54] dark:bg-blue-900 text-white px-8 py-4 rounded-lg font-bold text-lg hover:bg-blue-900 dark:hover:bg-blue-800 transition-all duration-300 hover:scale-105"
+              <Link 
+                to="/services"
+                className="bg-[#001F54] dark:bg-blue-900 text-white px-8 py-4 rounded-lg font-bold text-lg hover:bg-blue-900 dark:hover:bg-blue-800 transition-all duration-300 hover:scale-105 inline-block"
               >
                 Discover How We Help You
-              </button>
+              </Link>
             </div>
           </div>
         </div>
       </section>
 
       {/* Services Teaser */}
-      <section className="py-20 bg-gray-50 dark:bg-[#1a2740]">
-        <div className="container-responsive">
+      <section className="py-20 bg-gradient-to-br from-[#001F54] to-[#1e40af] text-white">
+        <div className="container max-w-[1200px] mx-auto px-4">
           <div className="text-center mb-12">
-            <h2 className="text-3xl md:text-4xl font-bold text-[#001F54] dark:text-white mb-4">
+            <h2 className="text-3xl md:text-4xl font-bold text-white mb-4">
               Our Services
             </h2>
-            <p className="text-lg text-gray-600 dark:text-gray-300 max-w-2xl mx-auto">
+            <p className="text-lg text-blue-100 max-w-2xl mx-auto">
               Comprehensive consulting services tailored to YOUR unique business needs
             </p>
           </div>
@@ -231,17 +142,17 @@ export default function Homepage() {
               { title: "Innovation Consulting", desc: "Drive creative solutions", icon: TrendingUp },
               { title: "Rapid Implementation", desc: "Fast, seamless changes", icon: Zap }
             ].map((service, index) => (
-              <div key={index} className="bg-white dark:bg-[#0a1627] rounded-xl p-6 shadow-lg hover:shadow-xl transition-all duration-300 hover:scale-105">
-                <service.icon className="w-12 h-12 text-blue-500 mb-4" />
-                <h3 className="text-xl font-bold text-[#001F54] dark:text-white mb-2">{service.title}</h3>
-                <p className="text-gray-600 dark:text-gray-300">{service.desc}</p>
+              <div key={index} className="bg-white/10 backdrop-blur-sm rounded-xl p-6 shadow-lg hover:shadow-xl transition-all duration-300 hover:scale-105 border border-white/20">
+                <service.icon className="w-12 h-12 text-blue-300 mb-4" />
+                <h3 className="text-xl font-bold text-white mb-2">{service.title}</h3>
+                <p className="text-blue-100">{service.desc}</p>
               </div>
             ))}
           </div>
           <div className="text-center mt-12">
             <Link 
               to="/services"
-              className="bg-[#001F54] dark:bg-blue-900 text-white px-8 py-4 rounded-lg font-bold text-lg hover:bg-blue-900 dark:hover:bg-blue-800 transition-all duration-300 hover:scale-105 inline-flex items-center gap-2"
+              className="bg-white text-[#001F54] px-8 py-4 rounded-lg font-bold text-lg hover:bg-blue-50 transition-all duration-300 hover:scale-105 inline-flex items-center gap-2"
             >
               View All Services
               <ArrowRight className="w-5 h-5" />
@@ -251,8 +162,8 @@ export default function Homepage() {
       </section>
 
       {/* Contact Section */}
-      <section id="contact" className="py-20 bg-white dark:bg-[#0a1627]">
-        <div className="container-responsive">
+      <section id="contact" className="py-20 bg-white dark:bg-[#0a1627] text-gray-900 dark:text-white">
+        <div className="container max-w-[1200px] mx-auto px-4">
           <div className="text-center mb-12">
             <h2 className="text-3xl md:text-4xl font-bold text-[#001F54] dark:text-white mb-4">
               Get In Touch
@@ -263,76 +174,8 @@ export default function Homepage() {
           </div>
           <div className="flex flex-col md:flex-row gap-6 md:gap-10">
             {/* Left: Form */}
-            <div className="flex-1 bg-white dark:bg-[#1a2740] rounded-2xl shadow-lg p-6 md:p-8 flex flex-col gap-4">
-              <div
-                onSubmit={(e) => {
-                  e.preventDefault();
-                  return false;
-                }}
-              >
-                <div>
-                  <label htmlFor="name" className="block text-sm font-bold text-[#001F54] dark:text-white mb-1">Name *</label>
-                  <input 
-                    id="name" 
-                    type="text" 
-                    required
-                    placeholder="Your Name" 
-                    className="w-full border border-gray-300 dark:border-gray-700 rounded-lg px-4 py-4 text-base bg-white dark:bg-[#0a1627] text-[#001F54] dark:text-white focus:outline-none focus:ring-2 focus:ring-blue-200 dark:focus:ring-blue-900 touch-target" 
-                    autoComplete="name"
-                  />
-                </div>
-                <div className="flex flex-col md:flex-row gap-4">
-                  <div className="flex-1">
-                    <label htmlFor="email" className="block text-sm font-bold text-[#001F54] dark:text-white mb-1">Email *</label>
-                    <input 
-                      id="email" 
-                      type="email" 
-                      required
-                      placeholder="john@company.com" 
-                      className="w-full border border-gray-300 dark:border-gray-700 rounded-lg px-4 py-4 text-base bg-white dark:bg-[#0a1627] text-[#001F54] dark:text-white focus:outline-none focus:ring-2 focus:ring-blue-200 dark:focus:ring-blue-900 touch-target" 
-                      autoComplete="email"
-                    />
-                  </div>
-                  <div className="flex-1">
-                    <label htmlFor="company" className="block text-sm font-bold text-[#001F54] dark:text-white mb-1">Company</label>
-                    <input 
-                      id="company" 
-                      type="text" 
-                      placeholder="Your Company" 
-                      className="w-full border border-gray-300 dark:border-gray-700 rounded-lg px-4 py-4 text-base bg-white dark:bg-[#0a1627] text-[#001F54] dark:text-white focus:outline-none focus:ring-2 focus:ring-blue-200 dark:focus:ring-blue-900 touch-target" 
-                      autoComplete="organization"
-                    />
-                  </div>
-                </div>
-                <div>
-                  <label htmlFor="message" className="block text-sm font-bold text-[#001F54] dark:text-white mb-1">Message *</label>
-                  <textarea 
-                    id="message" 
-                    required
-                    placeholder="Tell us about your business challenges and goals..." 
-                    className="w-full border border-gray-300 dark:border-gray-700 rounded-lg px-4 py-4 text-base h-32 resize-none bg-white dark:bg-[#0a1627] text-[#001F54] dark:text-white focus:outline-none focus:ring-2 focus:ring-blue-200 dark:focus:ring-blue-900 touch-target" 
-                    autoComplete="off"
-                  />
-                </div>
-                <button 
-                  type="button"
-                  onClick={handleSubmit}
-                  disabled={isSubmitting}
-                  className="w-full bg-[#001F54] dark:bg-blue-900 text-white text-lg px-6 py-4 rounded-lg font-bold shadow hover:scale-105 hover:bg-blue-900 dark:hover:bg-blue-800 transition-all duration-300 disabled:opacity-50 disabled:cursor-not-allowed disabled:scale-100 flex items-center justify-center gap-2 touch-target hover-lift"
-                >
-                  {isSubmitting ? (
-                    <>
-                      <div className="w-5 h-5 border-2 border-white border-t-transparent rounded-full animate-spin"></div>
-                      Sending...
-                    </>
-                  ) : (
-                    <>
-                      <Send className="w-5 h-5" />
-                      Send Message
-                    </>
-                  )}
-                </button>
-              </div>
+            <div className="flex-1 bg-white dark:bg-[#1a2740] rounded-2xl shadow-lg p-6 md:p-8">
+              <ContactForm title="Get In Touch" />
             </div>
             {/* Right: Company Info */}
             <div className="flex-1 bg-[#001F54] dark:bg-[#1a2740] rounded-2xl p-6 md:p-8 flex flex-col gap-4 text-white shadow-lg">

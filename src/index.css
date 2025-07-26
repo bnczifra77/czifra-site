@@ -145,6 +145,48 @@ body {
   .disabled {
     @apply opacity-50 cursor-not-allowed;
   }
+  
+  /* Improved button accessibility */
+  button {
+    @apply transition-all duration-200;
+  }
+  
+  /* Better link styling */
+  a {
+    @apply transition-colors duration-200;
+  }
+  
+  /* Improved modal backdrop */
+  .modal-backdrop {
+    backdrop-filter: blur(4px);
+  }
+  
+  /* Better form validation styling */
+  input:invalid,
+  textarea:invalid {
+    @apply border-red-500 dark:border-red-400;
+  }
+  
+  /* Improved focus ring for better visibility */
+  .focus-ring {
+    @apply focus:outline-none focus:ring-2 focus:ring-blue-500 focus:ring-offset-2 focus:ring-offset-white dark:focus:ring-offset-[#0a1627];
+  }
+}
+
+/* Remove all focus/active/visited highlights from header nav links */
+.header-nav-link,
+.header-nav-link:focus,
+.header-nav-link:active,
+.header-nav-link:visited {
+  outline: none !important;
+  box-shadow: none !important;
+  text-decoration: none !important;
+  background: none !important;
+}
+.header-nav-link:focus-visible {
+  outline: none !important;
+  box-shadow: none !important;
+  background: none !important;
 }
 
 /* Custom scrollbar for webkit browsers */
@@ -190,5 +232,38 @@ body {
   
   .safe-area-right {
     padding-right: env(safe-area-inset-right);
+  }
+  
+  /* Improved button utilities */
+  .btn-primary {
+    @apply bg-[#001F54] dark:bg-blue-900 text-white px-6 py-3 rounded-lg font-bold shadow hover:scale-105 hover:bg-blue-900 dark:hover:bg-blue-800 transition-all duration-300 focus-ring;
+  }
+  
+  .btn-secondary {
+    @apply bg-white text-[#001F54] px-6 py-3 rounded-lg font-bold border-2 border-[#001F54] hover:bg-[#001F54] hover:text-white transition-all duration-300 focus-ring;
+  }
+  
+  /* Form input utilities */
+  .form-input {
+    @apply w-full border border-gray-300 dark:border-gray-700 rounded-lg px-4 py-3 text-base bg-white dark:bg-[#0a1627] text-[#001F54] dark:text-white focus-ring transition-colors;
+  }
+  
+  /* Card utilities */
+  .card {
+    @apply bg-white dark:bg-[#1a2740] rounded-xl shadow-lg hover:shadow-xl transition-all duration-300;
+  }
+  
+  /* Icon centering utilities */
+  .icon-center {
+    @apply flex items-center justify-center;
+  }
+  
+  /* Improved spacing utilities */
+  .section-padding {
+    @apply py-16 md:py-20 lg:py-24;
+  }
+  
+  .container-padding {
+    @apply px-4 sm:px-6 lg:px-8;
   }
 }
